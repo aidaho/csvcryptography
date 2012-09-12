@@ -32,17 +32,17 @@ usage: csvcryptography.py [options] file1 [dir1 file2 ...]
 
     You can supply any number of target files/dirs to this utility.
 
-    Note that directories will be processed recursively and CSV files
-will be recognized by their contents rather than extension.
+    Note that the directories will be processed recursively and CSV
+files will be recognized by their contents rather than extension.
 
     Because the symmetric-key algorithm was used, there is no need to
 explicitly specify current action (decryption or encryption). If data
 was encrypted it will be decrypted and vice versa.
 
-    AES CTV is a stream version of a corresponding block version, this
+    AES CTV is a stream version of a corresponding block cipher, this
 means that if you encrypted column 0, and later decided to encrypt
 column 1 with same password, you cannot decrypt them both
-simultaneously with -c 0,1 option, because it's a different streams.
+simultaneously with -c 0,1 option, because they are a different streams.
 Likewise, if couple columns were encrypted simultaneously, you cannot
 decrypt them one by one, they are in the same stream now.
 
@@ -51,15 +51,15 @@ different passwords:
         csvcryptography.py -c 0 --password pass1 file
         csvcryptography.py -c 1 --password pass2 file
 
-    Now the column 0 encrypted with pass1 password and column 1 with
-pass2. You can selectively decrypt first column:
+    Now the column 0 is encrypted with "pass1" password and column 1 with
+"pass2". You can selectively decrypt first column:
         csvcryptography.py -c 0 --password pass1 file
 
     Others will be left in unaltered state: the second one left
 encrypted. Now decrypt the second column:
         csvcryptography.py -c 1 --password pass2 file
 
-    At this point of time file reverted back to original unalered
+    At this point of time file is reverted back to original unaltered
 state. One more time take a note that encryption and decryption
 commands for same targets are identical and column numeration starts
 from zero.
@@ -70,13 +70,14 @@ of them have this many columns.
 
     KNOWN LIMITATIONS:
 
-    As the CSV is not a format but only lax convention, there are many
-dialects of it. This software does not aim to support them all, adapt
-code for yourself. While this software is considered crossplatform, it
-silently assumes a few things most often found on modern unix-based
-operation systems like UTF-8 encoding of input files and presence or
-availability of Crypto++ library. Some effort might be required in
-order to run it elsewhere.
+    As the CSV is not a format but only a lax convention, there are
+many dialects of it. This software does not aim to support them all,
+adapt code for yourself. While this software is considered
+crossplatform, it silently assumes a few things most often found on
+modern unix-based operation systems like UTF-8 encoding of input files
+and presence or availability of Crypto++ library. Some effort might be
+required in order to run it elsewhere. For example, UCS-2 encoding
+will cause trouble to csv module.
 
                                                 Sergey Frolov, 2012
                                             dunkan.aidaho@gmail.com
