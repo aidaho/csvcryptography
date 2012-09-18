@@ -25,7 +25,7 @@ import optparse
 import pycryptopp
 
 version = '0.1'
-long_help = '''CSV cryptography - applies AES CTR encryption and decryption routines
+long_help = """CSV cryptography - applies AES CTR encryption and decryption routines
                    to a specified columns of a csv file.
 
 usage: csvcryptography.py [options] file1 [dir1 file2 ...]
@@ -82,7 +82,7 @@ will cause trouble to csv module.
                                                 Sergey Frolov, 2012
                                             dunkan.aidaho@gmail.com
 
-'''
+"""
 
 ## Options
 parser = optparse.OptionParser(usage =
@@ -91,9 +91,7 @@ parser = optparse.OptionParser(usage =
 parser.add_option('--long-help', dest='help', default=False,
                   action='store_true', help='show detailed usage info')
 def check_columns(option, opt, value, parser):
-    '''
-    Column syntax checker helper for optparse.
-    '''
+    """Column syntax checker helper for optparse."""
     columns = value.split(',')
     for column in columns:
         if not column.isdigit():
@@ -139,23 +137,25 @@ if options.columns: # parse list of columns if any
     
 # Top-level functions
 def crypto(string):
-    '''
+    """
     Encrypts/decrypts string with global AES object "enigma".
-    '''
+    """
     return enigma.process(string)
 
+
 def crypto_init(password):
-    '''
+    """
     Returns AES object instance initialised with provided password.
-    '''
+    """
     hashed_key = hashlib.md5(password).digest() # hash password
     return pycryptopp.cipher.aes.AES(key=hashed_key) # use it as AES key
 
+
 def crawler(paths):
-    '''
+    """
     Unrolls recursively all directories in iterable to tuple with it contents.
-    Leaves file paths unchanged
-    '''
+    Leaves file paths unchanged.
+    """
     unrolled_paths = []
     for path in paths:
         if os.path.isdir(path):
@@ -167,6 +167,7 @@ def crawler(paths):
         else:
             unrolled_paths.append(path)
     return unrolled_paths
+
 
 # Main logic
 processed_files = 0
@@ -188,7 +189,7 @@ for target in crawler(paths):
         csvfile.close() # cleanup
     except csv.Error:
         print 'Error: file %s does not seem ' % os.path.abspath(target),
-        print 'like valid CSV file, skipped'
+        print 'like valid CSV file, skipped.'
         csvfile.close()
         continue
     if options.not_really: # print everything, change nothing
@@ -205,7 +206,7 @@ for target in crawler(paths):
         csvfile.close()
         processed_files += 1
 if not processed_files:
-    print 'Nothing done'
+    print 'Nothing done.'
 else:
     print '%d file(s) was altered.' % processed_files
 
